@@ -3,7 +3,7 @@ function test_if_then()
   if true then
     result = 'true value'
   end
-  assert_equal(__, result)
+  assert_equal('true value', result)
 end
 
 function test_if_then_else()
@@ -13,7 +13,7 @@ function test_if_then_else()
   else
     result = 'false value'
   end
-  assert_equal(__, result)
+  assert_equal('true value', result)
 end
 
 function test_if_then_elseif_else()
@@ -25,7 +25,7 @@ function test_if_then_elseif_else()
   else
     result = 'default value'
   end
-  assert_equal(__, result)
+  assert_equal('second value', result)
 end
 
 function test_if_not_statement()
@@ -33,12 +33,12 @@ function test_if_not_statement()
   if not false then
     result = 'updated value'
   end
-  assert_equal(__, result)
+  assert_equal('updated value', result)
 end
 
 function test_and_or_expression()
-  assert_equal( __,  (true and 'true value' or 'false value') )
-  assert_equal( __, (false and 'true value' or 'false value') )
+  assert_equal( 'true value',  (true and 'true value' or 'false value') )
+  assert_equal( 'false value', (false and 'true value' or 'false value') )
 end
 
 function test_while()
@@ -47,7 +47,7 @@ function test_while()
     result = result * i
     i = i + 1
   end
-  assert_equal(__, result)
+  assert_equal(3628800, result)
 end
 
 function test_break()
@@ -57,7 +57,7 @@ function test_break()
     result = result * i
     i = i + 1
   end
-  assert_equal(__, result)
+  assert_equal(3628800, result)
 end
 
 function test_repeat()
@@ -66,7 +66,7 @@ function test_repeat()
     result = result * i
     i = i + 1
   until i==11
-  assert_equal(__, result)
+  assert_equal(3628800, result)
 end
 
 function test_numeric_for_creates_a_local_variable_not_available_outside_the_loop()
@@ -75,8 +75,8 @@ function test_numeric_for_creates_a_local_variable_not_available_outside_the_loo
   for i=1, #t do
     table.insert(result, t[i])
   end
-  assert_equal(__, table.concat(result, ' '))
-  assert_equal(__, i)
+  assert_equal('fish and chips', table.concat(result, ' '))
+  assert_equal(nil, i)
 end
 
 function test_numeric_for_with_step()
@@ -85,7 +85,7 @@ function test_numeric_for_with_step()
   for i=2, #t, 2 do -- notice the two here
     table.insert(result, t[i])
   end
-  assert_equal(__, table.concat(result, ', '))
+  assert_equal('2, 4, 6', table.concat(result, ', '))
 end
 
 function test_generic_for_over_array_like_tables_using_ipairs()
@@ -94,7 +94,7 @@ function test_generic_for_over_array_like_tables_using_ipairs()
   for key,value in ipairs(t) do
     table.insert(result, value)
   end
-  assert_equal(__, table.concat(result, ' '))
+  assert_equal('fish and chips', table.concat(result, ' '))
 end
 
 function test_generic_for_over_hash_like_tables_using_pairs()
@@ -103,6 +103,6 @@ function test_generic_for_over_hash_like_tables_using_pairs()
   for k,v in pairs(t) do
     result[k] = v
   end
-  assert_equal(__, result.a)
-  assert_equal(__, result.b)
+  assert_equal(1, result.a)
+  assert_equal(2, result.b)
 end

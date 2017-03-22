@@ -5,25 +5,25 @@ local function is_truthy(condition)
 end
 
 function test_true_is_truthy()
-  assert_equal(__, is_truthy(true))
+  assert_equal(true, is_truthy(true))
 end
 
 function test_false_is_not_truthy()
-  assert_equal(__, is_truthy(false))
+  assert_equal(false, is_truthy(false))
 end
 
 function test_nil_is_also_not_truthy()
-  assert_equal(__, is_truthy(nil))
+  assert_equal(false, is_truthy(nil))
 end
 
 function test_everything_else_is_truthy()
-  assert_equal(__, is_truthy(1))
-  assert_equal(__, is_truthy(0))
-  assert_equal(__, is_truthy({'tables'}))
-  assert_equal(__, is_truthy({}))
-  assert_equal(__, is_truthy("Strings"))
-  assert_equal(__, is_truthy(""))
-  assert_equal(__, is_truthy(function() return 'functions too' end))
+  assert_equal(true, is_truthy(1))
+  assert_equal(true, is_truthy(0))
+  assert_equal(true, is_truthy({'tables'}))
+  assert_equal(true, is_truthy({}))
+  assert_equal(true, is_truthy("Strings"))
+  assert_equal(true, is_truthy(""))
+  assert_equal(true, is_truthy(function() return 'functions too' end))
 end
 
 -- Bonus note:
