@@ -96,7 +96,7 @@ end
 function test_numbers_must_be_converted_to_strings_before_concatenation()
   local age = os.date("%Y") - 1993 -- note: os.date provides the current date in different formats
   local str = "Lua is " .. tostring(age) .. " years old"
-  assert_equal('Lua is 24 years old', str)
+  assert_equal('Lua is 24.0 years old', str)
 end
 
 function test_booleans_must_be_converted_to_strings_before_concatenation()

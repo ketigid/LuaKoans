@@ -8,7 +8,7 @@ class MyHandler(PatternMatchingEventHandler):
   patterns = ["*.lua"]
 
   def on_modified(self, event):
-    os.system("lua5.1 missions.lua")
+    os.system("lua missions.lua")
 
 if __name__ == "__main__":
   args = sys.argv[1:]
