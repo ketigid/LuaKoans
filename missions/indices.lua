@@ -8,8 +8,8 @@ function test_index_metamethod_is_invoked_when_a_key_is_not_found_on_table()
 
   local t = setmetatable({x = 1, y = 2}, mt)
 
-  assert_equal(__, t.x)
-  assert_equal(__, t.z)
+  assert_equal(1, t.x)
+  assert_equal('z not found on t', t.z)
 end
 
 function test_index_metamethod_can_be_used_to_look_up_values_in_other_tables()
@@ -23,7 +23,7 @@ function test_index_metamethod_can_be_used_to_look_up_values_in_other_tables()
 
   local t2 = setmetatable({x = 1, y = 2}, mt)
 
-  assert_equal(__, t2.z)
+  assert_equal(3, t2.z)
 end
 
 function test_syntactic_sugar_when_index_metamethod_is_assigned_to_a_table()
@@ -31,12 +31,12 @@ function test_syntactic_sugar_when_index_metamethod_is_assigned_to_a_table()
   local mt = { __index = t1 }
   local t2 = setmetatable({x = 1, y = 2}, mt)
 
-  assert_equal(__, t2.z)
+  assert_equal(3, t2.z)
 end
 
 function test_syntactic_sugar_allows_for_one_liners()
   local t2 = setmetatable({x = 1, y = 2}, { __index = {z = 3} })
-  assert_equal(__, t2.z)
+  assert_equal(3, t2.z)
 end
 
 function test_rawget_does_not_invoke_index_metamethod()
@@ -44,13 +44,13 @@ function test_rawget_does_not_invoke_index_metamethod()
   local t2 = setmetatable({x = 1, y = 2}, { __index = {z = 3} })
   -- rawget is useful to avoid infinite recursions, or when you just want to bypass the metatable
   -- it usually returns nil
-  assert_equal(__, rawget(t2, 'z'))
+  assert_equal(nil, rawget(t2, 'z'))
   -- question: how can you make an infinite recursion happen with metatables and __index?
 end
 
 function test_index_also_works_on_integer_keys()
   local doubler = setmetatable({}, { __index = function (t, key) return key * 2 end })
-  assert_equal(__, doubler[24]) 
+  assert_equal(48, doubler[24]) 
 end
 
 function test_newindex_metamethod_is_invoked_when_a_new_value_is_inserted_in_a_table()
@@ -63,8 +63,8 @@ function test_newindex_metamethod_is_invoked_when_a_new_value_is_inserted_in_a_t
     end
   })
   t2.x = 1
-  assert_equal(__, t2.x)
-  assert_equal(__, t1.x)
+  assert_equal(nil, t2.x)
+  assert_equal(10, t1.x)
 end
 
 function test_newindex_syntactic_sugar_for_tables()
@@ -72,8 +72,8 @@ function test_newindex_syntactic_sugar_for_tables()
   local t2 = setmetatable({}, { __newindex = t1 })
 
   t2.x = 10
-  assert_equal(__, t2.x)
-  assert_equal(__, t1.x)
+  assert_equal(nil, t2.x)
+  assert_equal(10, t1.x)
 end
 
 function test_rawset_allows_modifying_tables_without_invoking_newindex()
@@ -92,15 +92,15 @@ function test_rawset_allows_modifying_tables_without_invoking_newindex()
   })
 
   clock.hours = 2.5
-  assert_equal(__, clock.seconds)
+  assert_equal(9000, clock.seconds)
 
   clock.minutes = 20
-  assert_equal(__, clock.seconds)
+  assert_equal(1200, clock.seconds)
 
   clock.seconds = 15
-  assert_equal(__, clock.seconds)
+  assert_equal(15, clock.seconds)
 
   clock.foo = 'hi'
-  assert_equal(__, clock.foo)
+  assert_equal(nil, clock.foo)
 
 end

@@ -7,13 +7,13 @@ function test_metatables_are_just_regular_tables()
   local mt = {}
   setmetatable(t, mt)
 
-  assert_equal(__, mt == getmetatable(t))
+  assert_equal(true, mt == getmetatable(t))
 end
 
 function test_setmetatable_returns_the_table_being_modified()
   local mt = {}
-  local t = setmetatable({1, 2, 3}, mt) -- this is a very comon idiom
-  assert_equal(__, mt == getmetatable(t))
+  local t = setmetatable({1, 2, 3}, mt) -- this is a very common idiom
+  assert_equal(true, mt == getmetatable(t))
 end
 
 function test_tostring_metamethod_allows_defining_the_way_tables_are_transformed_into_text()
@@ -23,7 +23,7 @@ function test_tostring_metamethod_allows_defining_the_way_tables_are_transformed
     end
   }
   local t = setmetatable({1,2,3,4}, mt)
-  assert_equal(__, tostring(t))
+  assert_equal('table with 4 items', tostring(t))
 end
 
 function test_add_metamethod_is_invoked_when_the_plus_symbol_is_used()
@@ -37,7 +37,7 @@ function test_add_metamethod_is_invoked_when_the_plus_symbol_is_used()
   local t2 = {value = 20}
   setmetatable(t1, mt) -- it's enough if one of the tables has a metatable with __add
 
-  assert_equal(__, t1 + t2)
+  assert_equal(30, t1 + t2)
 
   -- other metamethods like __sub, __mul, __div, __mod and __pow are very similar to __add
 end
@@ -57,7 +57,7 @@ function test_unm_metamethod_is_invoked_when_the_unary_minus_symbol_is_used()
   setmetatable(t, mt)
   local result = -t
 
-  assert_equal(__, table.concat(result, ', '))
+  assert_equal('5, 4, 3, 2, 1', table.concat(result, ', '))
 end
 
 function test_concat_metamethod_is_invoked_when_dot_dot_operator_is_used()
@@ -76,7 +76,7 @@ function test_concat_metamethod_is_invoked_when_dot_dot_operator_is_used()
 
   local result = t1 .. t2
 
-  assert_equal(__, table.concat(result, ', '))
+  assert_equal('1, 2, 3, 4, 5, 6', table.concat(result, ', '))
 end
 
 function test_eq_operator_is_invoked_when_the_equal_or_not_equal_operators_are_used()
@@ -84,8 +84,8 @@ function test_eq_operator_is_invoked_when_the_equal_or_not_equal_operators_are_u
   local t1 = {1,2,3}
   local t2 = {1,2,3}
 
-  assert_equal(__, t1 == t2)
-  assert_equal(__, t1 ~= t2)
+  assert_equal(false, t1 == t2)
+  assert_equal(true, t1 ~= t2)
 
   local mt = {
     __eq = function(a,b)
@@ -107,8 +107,8 @@ function test_eq_operator_is_invoked_when_the_equal_or_not_equal_operators_are_u
   if lua_greater_or_equal_5_3() then
     -- Lua 5.3: __eq is invoked if either
     -- of the two operands has metatable set:
-    assert_equal(__, t1 == t2)
-    assert_equal(__, t1 ~= t2)
+    assert_equal(true, t1 == t2)
+    assert_equal(false, t1 ~= t2)
   else
     -- Lua <=5.2: __eq is only invoked if
     -- both operands have metatable set:
@@ -119,8 +119,8 @@ function test_eq_operator_is_invoked_when_the_equal_or_not_equal_operators_are_u
   -- both operands have metatable set:
   -- (identical behaviour for Lua 5.x)
   setmetatable(t2, mt)
-  assert_equal(__, t1 == t2)
-  assert_equal(__, t1 ~= t2)
+  assert_equal(true, t1 == t2)
+  assert_equal(false, t1 ~= t2)
 
 end
 
@@ -142,7 +142,7 @@ function test_lt_metamethod_is_invoked_when_the_less_or_greater_than_operators_a
   -- we are using the < operator for addition, we can discard the result
   _ = t1 < t2
 
-  assert_equal(__, table.concat(t1, ', '))
+  assert_equal('1, 2, 3, 4, 5, 6', table.concat(t1, ', '))
 
   -- there's also a __le that works similarly to lt, but for the <= operator
 end
@@ -154,5 +154,5 @@ function test_call_operator_is_invoked_when_a_table_is_used_like_a_function()
     end
   })
 
-  assert_equal(__, doubler(10))
+  assert_equal(20, doubler(10))
 end

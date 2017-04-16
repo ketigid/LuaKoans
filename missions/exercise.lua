@@ -8,7 +8,23 @@
 ]]
 
 -- INSERT YOUR CODE HERE
+function string:starts_with(x)
+  start,_ = self:find('^'..x)
+  if start == 1 then
+    return true
+  else
+    return false
+  end
+end
 
+function string:ends_with(x)
+  _,last = self:find(x..'$')
+  if last == #self then
+    return true
+  else
+    return false
+  end
+end
 
 -- END OF CODE INSERT
 
