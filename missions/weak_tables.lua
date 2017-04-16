@@ -4,14 +4,14 @@ function test_gc_does_not_remove_values_from_regular_tables_with_references()
   local t = {}
   t.foo = {}
   collectgarbage()
-  assert_equal(__, type(t.foo))
+  assert_equal('table', type(t.foo))
 end
 
 function test_gc_removes_values_from_tables_with_mode_set_to_v_if_there_are_no_other_references_to_them()
   local t = setmetatable({}, { __mode = 'v' })
   t.foo = {}
   collectgarbage()
-  assert_equal(__, type(t.foo))
+  assert_equal('nil', type(t.foo))
 end
 
 function test_gc_does_not_remove_values_from_tables_with_mode_set_to_v_if_there_are_other_references()
@@ -19,7 +19,7 @@ function test_gc_does_not_remove_values_from_tables_with_mode_set_to_v_if_there_
   local x = {}
   t.foo = x
   collectgarbage()
-  assert_equal(__, type(t.foo))
+  assert_equal('table', type(t.foo))
 end
 
 function test_gc_does_not_remove_keys_from_regular_tables()
@@ -27,7 +27,7 @@ function test_gc_does_not_remove_keys_from_regular_tables()
   local x = {}
   t[x] = true
   collectgarbage()
-  assert_equal(__, t[x])
+  assert_equal(true, t[x])
 end
 
 -- not a test, a helper
@@ -43,7 +43,7 @@ function test_gc_does_not_remove_the_key_when_mode_is_k_and_there_are_other_refe
   local x = {}
   t[x] = true
   collectgarbage()
-  assert_equal(__, has_anything(t))
+  assert_equal(true, has_anything(t))
 end
 
 function test_gc_removes_the_key_when_mode_is_k_and_no_other_references_remain()
@@ -53,7 +53,7 @@ function test_gc_removes_the_key_when_mode_is_k_and_no_other_references_remain()
     t[x] = true
   end
   collectgarbage()
-  assert_equal(__, has_anything(t))
+  assert_equal(false, has_anything(t))
 end
 
 function test_really_weak_tables_have_their_mode_set_to_both_k_and_v()
@@ -62,7 +62,7 @@ function test_really_weak_tables_have_their_mode_set_to_both_k_and_v()
     local x = {}
     t[x] = x
   end
-  assert_equal(__, has_anything(t))
+  assert_equal(true, has_anything(t))
   collectgarbage()
-  assert_equal(__, has_anything(t))
+  assert_equal(false, has_anything(t))
 end
